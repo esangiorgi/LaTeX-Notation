@@ -50,13 +50,10 @@
 \RequirePackage{float} % per [H]
 \RequirePackage{fancyhdr}
 \RequirePackage{amsthm}   % - Per \theoremstyle
-\RequirePackage{thmtools} %   Per Evidenziare Osservazioni
-\RequirePackage[nothm]{thmbox} % Per Evidenziare Esempi
 \RequirePackage{hyperref} % - Per mettere link 
 \RequirePackage{setspace} % Per l'interlinea
 \RequirePackage{etoolbox}
-\RequirePackage{parskip}
-
+% \RequirePackage{parskip}
 
 
 % === Definizione Colori === 
@@ -108,10 +105,12 @@
 \fancyhf{} % Pulisce tutti i campi (header e footer)
 
 % --- 1. Gestione del Nome Capitolo (No tutto maiuscolo) ---
-\renewcommand{\chaptermark}[1]{\markboth{\thechapter\; #1}{}}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter\quad #1}{}}
 
 % --- 2. Intestazione (Header) ---
-\fancyhead[LE, RO]{\slshape \leftmark}
+\fancyhead[LE]{ \leftmark}
+\fancyhead[LO]{\@author}
+\fancyhead[RO]{\@title}
 
 % --- 3. Piè di pagina (Footer) ---
 % Numero di pagina in basso al centro (come di default)
@@ -138,16 +137,26 @@
 %%% AMBIENTI                                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% dimostrazione
-\thmboxoptions{                 % Ridefinisce lo stile 
-titlestyle={ $\quad$#1},  % thmbox con i font che
-bodystyle=\normalfont,}         % desideriamo, vedi documentazione
+% %% dimostrazione
+% \thmboxoptions{                 % Ridefinisce lo stile 
+% titlestyle={ $\quad$#1},        % thmbox con i font che
+% bodystyle=\normalfont,}         % desideriamo, vedi documentazione
 
-\declaretheorem[
-    thmbox=M,
-    name=Dimostrazione,
-    numberwithin=chapter
-]{dm}
+% \declaretheorem[
+%     thmbox=M,
+%     name=Dimostrazione,
+%     numberwithin=chapter
+% ]{dm}
+
+
+\newtheorem{teorema}{Teorema}[chapter]
+
+\theoremstyle{definition}
+\newtheorem{definizione}{Definizione}[chapter]
+
+\theoremstyle{remark}
+\newtheorem*{ricordo}{Ricordo}
+
 
 %% Nota
 \newtcolorbox{nota}[1][]{
@@ -261,7 +270,7 @@ bodystyle=\normalfont,}         % desideriamo, vedi documentazione
         \vfill
         \ifdefempty{\@titleimage}
         {
-            \vspace*{3cm}
+            \vfill
         }
         {
             \IfFileExists{\@titleimage}
