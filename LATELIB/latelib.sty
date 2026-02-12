@@ -1,0 +1,205 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{latelib}[2026/02/05 A LaTeX package for mathematic notation]
+
+
+\RequirePackage{amssymb, mathrsfs}
+\RequirePackage{bm}
+\RequirePackage{xparse}
+\RequirePackage{empheq}
+\RequirePackage{mathrsfs}
+\RequirePackage{diagbox}
+\RequirePackage{setspace}
+\RequirePackage{lipsum}
+\RequirePackage{siunitx}
+\RequirePackage{amsfonts}
+
+
+
+    
+% === Definizione di comandi utili ========
+\NewDocumentCommand{\rb}{m}{\ensuremath{\left(#1\right)}}
+% \newcommand{\rb}[1]{\left( #1 \right)}
+\RenewDocumentCommand{\sb}{m}{\ensuremath{\left[#1\right]}}
+\NewDocumentCommand{\cb}{m}{\ensuremath{\left\{#1\right\}}}
+
+\RenewDocumentCommand{\sin}{e{^} e{_} g}{%
+  \operatorname{sin}%
+  \IfValueT{#1}{^{#1}}% Gestisce l'apice (es. \sin^2)
+  \IfValueT{#2}{_{#2}}% Gestisce il pedice (es. \sin_{min})
+  \IfValueTF{#3}{\rb{#3}}{\mkern 2mu}% Gestisce l'argomento tra parentesi
+}
+\RenewDocumentCommand{\cos}{e{^} e{_} g}{%
+  \operatorname{cos}%
+  \IfValueT{#1}{^{#1}}% Gestisce l'apice (es. \sin^2)
+  \IfValueT{#2}{_{#2}}% Gestisce il pedice (es. \sin_{min})
+  \IfValueTF{#3}{\rb{#3}}{\mkern 2mu}% Gestisce l'argomento tra parentesi
+}
+\RenewDocumentCommand{\tan}{e{^} e{_} g}{%
+  \operatorname{tan}%
+  \IfValueT{#1}{^{#1}}% Gestisce l'apice (es. \sin^2)
+  \IfValueT{#2}{_{#2}}% Gestisce il pedice (es. \sin_{min})
+  \IfValueTF{#3}{\rb{#3}}{\mkern 2mu}% Gestisce l'argomento tra parentesi
+}
+\RenewDocumentCommand{\log}{e{^} e{_} g}{%
+  \operatorname{log}%
+  \IfValueT{#1}{^{#1}}% Gestisce l'apice (es. \sin^2)
+  \IfValueT{#2}{_{#2}}% Gestisce il pedice (es. \sin_{min})
+  \IfValueTF{#3}{\rb{#3}}{\mkern 2mu}% Gestisce l'argomento tra parentesi
+}
+\NewDocumentCommand{\sinc}{e{^} e{_} g}{%
+  \operatorname{sinc}%
+  \IfValueT{#1}{^{#1}}% Gestisce l'apice (es. \sin^2)
+  \IfValueT{#2}{_{#2}}% Gestisce il pedice (es. \sin_{min})
+  \IfValueTF{#3}{\rb{#3}}{\mkern 2mu}% Gestisce l'argomento tra parentesi
+}
+\RenewDocumentCommand{\ln}{e{^} e{_} g}{%
+  \operatorname{ln}%
+  \IfValueT{#1}{^{#1}}% Gestisce l'apice (es. \sin^2)
+  \IfValueT{#2}{_{#2}}% Gestisce il pedice (es. \sin_{min})
+  \IfValueTF{#3}{\rb{#3}}{\mkern 2mu}% Gestisce l'argomento tra parentesi
+}
+
+\NewDocumentCommand{\inner}{g g}{%
+  \ensuremath{
+    \IfValueTF{#1}{
+      % Se il primo argomento esiste
+      \left\langle #1 \IfValueTF{#2}{, #2}{} \right\rangle
+    }{
+      % Se non viene passato alcun argomento
+      \left\langle \cdot , \cdot \right\rangle
+    }
+  }
+}
+\NewDocumentCommand{\abs}{g}{
+    \ensuremath{
+    \IfValueTF{#1}
+        {\left| #1 \right|}
+        {| \cdot |}
+    }
+}
+\NewDocumentCommand{\norm}{g}{%
+  \ensuremath{
+      \IfValueTF{#1}
+        {\left\| #1 \right\|} % Se c'è l'argomento, mette le barre che si ridimensionano
+        {\|\cdot\|}           % Se non c'è l'argomento, mette il simbolo di norma generica
+    }
+}
+
+\NewDocumentCommand{\FT}{g}{%
+  \mathcal{F}\IfValueT{#1}{\cb{#1}}%
+}
+\NewDocumentCommand{\AFT}{g}{%
+  \mathcal{F}^{-1}\IfValueT{#1}{\cb{#1}}%
+}
+\RenewDocumentCommand{\Re}{g}{%
+  \mathrm{Re}\IfValueTF{#1}{\cb{#1}}{\mkern 2mu} % aggiunge un piccolo spazio se usato da solo
+}
+\RenewDocumentCommand{\Im}{g}{%
+  \mathrm{Im}\IfValueTF{#1}{\cb{#1}}{\mkern 2mu}
+}
+
+
+
+\NewDocumentCommand{\bv}{m}{\bm{#1}}
+\NewDocumentCommand{\rv}{m}{\mathsf{#1}}
+\NewDocumentCommand{\rib}{m}{\textbf{#1}}
+\makeatletter
+\NewDocumentCommand{\vers}{m}{%
+  \ifcat\noexpand#1\relax
+    \boldsymbol{#1}% per simboli (greco, ecc.)
+  \else
+    \textbf{#1}% per lettere latine
+  \fi
+}
+\makeatother
+
+\NewDocumentCommand{\vx}{}{\vers{x}_0}
+\NewDocumentCommand{\vy}{}{\vers{y}_0}
+\NewDocumentCommand{\vz}{}{\vers{z}_0}
+
+\NewDocumentCommand{\dd}{}{\mathrm{d}}
+    \DeclareOption{ddit}{\RenewDocumentCommand{\dd}{}{d}}
+    \DeclareOption*{\PackageWarning{examplepackage}{Unknown ‘\CurrentOption’}}
+    \ProcessOptions\relax
+\NewDocumentCommand{\dv}{o m g}{%
+  \IfNoValueTF{#3}
+    {% CASO 1: Un solo argomento (Arg2 è la variabile) -> Operatore d/dx
+     \frac{\dd\IfValueT{#1}{^{#1}}}{\dd #2\IfValueT{#1}{^{#1}}}%
+    }
+    {% CASO 2: Due argomenti (Arg2=funz, Arg3=var) -> Frazione df/dx
+     \frac{\dd\IfValueT{#1}{^{#1}} #2}{\dd #3\IfValueT{#1}{^{#1}}}%
+    }%
+}
+\NewDocumentCommand{\pdv}{o m g}{%
+  \IfNoValueTF{#3}
+    {% CASO 1: Operatore parziale
+     \frac{\partial\IfValueT{#1}{^{#1}}}{\partial #2\IfValueT{#1}{^{#1}}}%
+    }
+    {% CASO 2: Frazione parziale
+     \frac{\partial\IfValueT{#1}{^{#1}} #2}{\partial #3\IfValueT{#1}{^{#1}}}%
+    }%
+}
+\NewDocumentCommand{\Nat}{}{\nabla_t}
+\NewDocumentCommand{\Lapl}{}{\nabla^2}
+\NewDocumentCommand{\Lat}{}{\Lapl_t}
+\NewDocumentCommand{\Div}{m}{\nabla \cdot #1}
+\NewDocumentCommand{\Rot}{m}{\nabla \times #1}
+\NewDocumentCommand{\Grad}{m}{\nabla#1}
+
+
+\NewDocumentCommand{\Kdelta}{m}{\ensuremath{\delta_{#1}}}
+\NewDocumentCommand{\op}{}{\mathcal{L}}
+\NewDocumentCommand{\adj}{m}{#1^{\dagger}}
+
+\NewDocumentCommand{\conj}{m}{#1^*}
+
+
+\NewDocumentCommand{\newpar}{}{\bigskip\noindent}
+\NewDocumentCommand{\palatino}{m}{{\fontfamily{ppl}\selectfont #1}}
+\NewDocumentCommand{\modo}{m m}{\ensuremath{\text{#1}_{#2}}}
+
+\NewDocumentCommand{\sist}{m}{\ensuremath{
+    \left\{
+    \begin{aligned}
+        #1
+    \end{aligned}
+    \right.
+    }
+}
+% \newcommand{\comb}[2]{}{\underset{#1}{\mathrm{comb}}\rb{#2}}
+\NewDocumentCommand{\erf}{e{^} g}{%
+  \operatorname{erf}\IfValueT{#1}{^{#1}}% Se c'è l'esponente ^2 lo mette
+  \IfValueTF{#2}{\rb{#2}}{\mkern 2mu}% Poi mette l'argomento tra parentesi
+}
+\NewDocumentCommand{\erfc}{e{^} g}{%
+  \operatorname{erfc}\IfValueT{#1}{^{#1}}% Se c'è l'esponente ^2 lo mette
+  \IfValueTF{#2}{\rb{#2}}{\mkern 2mu}% Poi mette l'argomento tra parentesi
+}
+\NewDocumentCommand{\Def}{}{\triangleq}
+\NewDocumentCommand{\maxp}{}{\mathrm{max}}
+\NewDocumentCommand{\minp}{}{\mathrm{min}}
+\NewDocumentCommand{\Prob}{g}{%
+  \mathbb{P}\IfValueTF{#1}{\! \cb{#1}}{\mkern 2mu}
+}
+\NewDocumentCommand{\E}{g}{%
+  \mathbb{E}\IfValueTF{#1}{\! \cb{#1}}{\mkern 2mu}
+}
+\NewDocumentCommand{\Var}{g}{%
+  \mathbb{V}\IfValueTF{#1}{\! \cb{#1}}{\mathrm{ar}}
+}
+\NewDocumentCommand{\Cov}{g g}{%
+  \mathbb{C}\mathrm{ov}\IfValueTF{#1}{ \cb{#1, #2} }{\mkern 2mu}
+}
+
+
+\NewDocumentCommand{\const}{}{\ensuremath{\mathrm{const}}}
+\def\LaTeLib{\texttt{LaTeLib}}
+
+
+
+
+
+
+
+
+    

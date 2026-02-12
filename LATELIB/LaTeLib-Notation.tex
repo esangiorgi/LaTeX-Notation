@@ -1,0 +1,111 @@
+\documentclass[12pt, a4paper ]{article}
+\usepackage{latelib}
+\usepackage[italian]{babel}
+
+
+
+\def\fx{\frac{f}{2}}
+\def\sh{\textbackslash}
+\def\ds{\displaystile}
+
+\title{Guida all'uso del pacchetto \LaTeLib.\\[0.5em]  \large versione 0.3}
+\author{Edoardo Sangiorgi}
+\date{\today}
+
+
+% \pgfplotsset{compat=1.18}
+\begin{document}
+
+\maketitle
+\noindent
+Questo documento illustra le funzionalità del pacchetto \LaTeLib.
+Questo pacchetto è stato progettato per semplificare la scrittura e la lettura di codice \LaTeX in testi d'ingegneria, matematica e fisica.
+
+Un'importante premessa è che questo lavoro è un progetto amatoriale e pertanto può essere soggetto a imprecisioni, semplificazioni e bug.
+
+Di seguito sono riportati i comandi e il loro uso.
+
+\subsection*{Fondamentali}
+Una prima funzionalità da illustrare sono le parentesi automatiche.
+Per i seguenti esempi si è assegnato il valore $\frac{f}{2}$ alla costante \texttt{\sh fx}
+\begin{align*}
+    &\text{\small parentesi tonde} && \texttt{\sh rb\{\sh fx\}} && \rb{\fx}\\
+    &\text{\small parentesi quadre} && \texttt{\sh sb\{\sh fx\}} && \sb{\fx}\\
+    &\text{\small parentesi graffe} && \texttt{\sh cb\{\sh fx\}} && \cb{\fx}
+\end{align*}
+queste funzioni sono applicate ad altri comandi che coinvolgono funzioni e operazioni ammettendo però una doppia forma.
+\begin{align*}
+    &\text{\small seno normale} && \texttt{\sh sin x} && \sin x\\
+    &\text{\small seno con par.} && \texttt{\sh sin\{x\}} && \sin{x}\\
+    &\text{\small seno alla seconda.} && \texttt{\sh sin\^{}2\{x\}} && \sin^2{x}\\
+    &\text{\small seno con pedice.} && \texttt{\sh sin\_a\{x\}} && \sin_a{x}
+\end{align*}
+dove se usiamo la prima forma abbiamo il comportamento normale mentre con la seconda vengono implementate le parentesi che auto-dimensionano.
+Questa cosa si applica per altre funzioni trigonometriche e le funzioni logaritmiche.
+
+Sono definiti altri operatori che hanno gli stessi comportamenti.
+\begin{align*}
+    &\text{\small prodotto scalare} && \texttt{\sh inner\{a\}\{b\}} && \inner{a}{b}\\
+    &\text{\small modulo} && \texttt{\sh abs\{x\}} && \abs{x}\\
+    &\text{\small norma} && \texttt{\sh norm\{x\}} && \norm{x}\\
+    &\text{\small tr. di Fourier} && \texttt{\sh FT},\texttt{\sh FT\{x\}} && \FT,\FT{x}\\
+    &\text{\small antitr. di Fourier} && \texttt{\sh AFT},\texttt{\sh AFT\{x\}} && \AFT,\AFT{x}\\
+    &\text{\small parte reale} && \texttt{\sh Re},\texttt{\sh Re\{x\}} && \Re,\Re{x}\\
+    &\text{\small parte immaginaria} && \texttt{\sh Im},\texttt{\sh Im\{x\}} && \Im,\Im{x}
+\end{align*}
+Infine, sono definiti anche gli operatori statistici
+\begin{align*}
+    &\text{\small Probabilità} && \texttt{\sh Prob\{x\}} && \Prob{x}\\
+    &\text{\small Valore atteso} && \texttt{\sh E\{x\}} && \E{x}\\
+    &\text{\small Varianza} && \texttt{\sh Var\{x\}} && \Var{x}\\
+    &\text{\small Covarianza} && \texttt{\sh Cov\{x\}\{y\}} && \Cov{x}{y}
+\end{align*}
+
+\subsection*{Notazione delle variabili}
+Per la notazione vettoriale, sono stati creati comandi per vettore, versore e campo.
+\begin{align*}
+    &\text{\small var. aleatoria} && \texttt{\sh rb\{x\}} && \rv{x}\\
+    &\text{\small vettore} && \texttt{\sh bv\{x\}} && \bv{x}\\
+    &\text{\small versore} && \texttt{\sh vers\{x\}},\texttt{\sh vers\{$\alpha$\}} && \vers{x},\vers{\alpha}\\
+    &\text{\small campo} && \texttt{\sh rib\{E\}} && \rib{E}
+\end{align*}
+Per un ulteriore comodità, sono definiti i versori degli assi cartesiani
+\begin{align*}
+    &\texttt{\sh vx} && \vx\\
+    &\texttt{\sh vy} && \vy\\
+    &\texttt{\sh vz} && \vz
+\end{align*}
+
+\subsection*{Operatori differenziali}
+Sono stati definiti poi dei comandi per le derivate (di ogni ordine), sia totali che parziali, e operazioni che coinvolgono il simbolo $\nabla$.
+\begin{align*}
+    &\text{\small differenziale} && \texttt{\sh dd x} && \dd x\\
+    &\text{\small op. derivata} && \texttt{\sh dv\{x\}} && \dv{x}\\
+    &\text{\small der. prima} && \texttt{\sh dv\{f\}\{x\}} && \dv{f}{x}\\ 
+    &\text{\small der. seconda} && \texttt{\sh dv[2]\{f\}\{x\}} && \dv[2]{f}{x}\\
+    &\text{\small op. der. parziale} && \texttt{\sh pdv\{x\}} && \pdv{x}\\
+    &\text{\small der. par. prima} && \texttt{\sh pdv\{f\}\{x\}} && \pdv{f}{x}\\
+    &\text{\small der. par. seconda} && \texttt{\sh pdv[2]\{f\}\{x\}} && \pdv[2]{f}{x}\\[1em]
+    &\text{\small Nabla trasverso} && \texttt{\sh Nat} && \Nat\\
+    &\text{\small Laplaciano} && \texttt{\sh Lapl} && \Lapl\\
+    &\text{\small Lapl. trasverso} && \texttt{\sh Lat} && \Lat\\[1em]
+    &\text{\small Gradiente} && \texttt{\sh Grad\{E\}} && \Grad{E}\\
+    &\text{\small Divergenza} && \texttt{\sh Div\{E\}} && \Div{E}\\
+    &\text{\small Rotore} && \texttt{\sh Rot\{E\}} && \Rot{E}
+\end{align*}
+
+
+\subsection*{Altri comandi}
+Riportiamo qui altri comandi utili in ingegneria
+\begin{align*}
+    &\text{\small funzione errore} && \texttt{\sh erf\{x\}} && \erf{x}\\
+    &\text{\small fun. err. complementare} && \texttt{\sh erfc\{x\}} && \erfc{x}\\
+    &\text{\small definizione} && \texttt{x \sh Def \sh fx} && x\Def\fx\\
+    &\text{\small max a pedice} && \texttt{x\_\sh maxp} && x_\maxp\\
+    &\text{\small min a pedice} && \texttt{x\_\sh maxp} && x_\minp\\
+    &\text{\small costante} && \texttt{\sh const} && \const\\
+    &\text{\small modo} && \texttt{\sh modo\{TE\}\{10\}} && \modo{TE}{10}
+\end{align*}
+
+\end{document}
+
