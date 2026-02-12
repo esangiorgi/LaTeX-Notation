@@ -1,0 +1,18 @@
+# LaTeX temporary files
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.pdf
+*.toc
+*.out
+*.nav
+*.snm
+*.vrb
+
+# Editor temporary files
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+.vscode/
