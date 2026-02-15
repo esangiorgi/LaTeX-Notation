@@ -1,5 +1,5 @@
 
-\ProvidesClass{classnotes}[2024/06/01 v1.0 Class Notes LaTeX Class]
+\ProvidesClass{classnotes}[2024/06/01 v1.1 Class Notes LaTeX Class]
 
 
 \newcommand{\@subtitle}{}
@@ -27,6 +27,8 @@
     a4paper,
     top=3cm,
     bottom=2.5cm,
+    left=3cm,
+    right=3cm,
     hmarginratio=1:1 % Forza il rapporto 1:1 tra i margini orizzontali
 ]{geometry}
 
@@ -53,7 +55,8 @@
 \RequirePackage{hyperref} % - Per mettere link 
 \RequirePackage{setspace} % Per l'interlinea
 \RequirePackage{etoolbox}
-% \RequirePackage{parskip}
+\RequirePackage{parskip}
+% \RequirePackage{mdframed}
 
 
 % === Definizione Colori === 
@@ -89,7 +92,14 @@
 
 
 
-% === Setup del documento ===
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% SETUP DEL DOCUMENTO                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \onehalfspacing
 \raggedbottom
 
@@ -137,41 +147,77 @@
 %%% AMBIENTI                                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% %% dimostrazione
-% \thmboxoptions{                 % Ridefinisce lo stile 
-% titlestyle={ $\quad$#1},        % thmbox con i font che
-% bodystyle=\normalfont,}         % desideriamo, vedi documentazione
-
-% \declaretheorem[
-%     thmbox=M,
-%     name=Dimostrazione,
-%     numberwithin=chapter
-% ]{dm}
 
 
-\newtheorem{teorema}{Teorema}[chapter]
+\tcbset{
+    stileBase/.style={
+        enhanced, breakable,
+        colback=white, colframe=black!70, boxrule=0.8pt, arc=3pt,
+        left=6pt, right=6pt, top=6pt, bottom=6pt,
+        before skip=15pt, after skip=15pt,
+        detach title, % Non usa il titolo standard del box
+    }
+}
 
-\theoremstyle{definition}
-\newtheorem{definizione}{Definizione}[chapter]
+%% Teorema
+\newtcolorbox[auto counter, number within=chapter]{teorema}[1][]{
+    stileBase,
+    colframe=blueline,
+    colback=blueline!5,
+    before upper={%
+        \textbf{Teorema~\thetcbcounter}             % scrive "Teorema 1.1" in grassetto
+        \ifstrempty{#1}{}{~\textbf{(#1).}}           % se c'è un titolo, aggiunge " (Titolo)"
+        \space\normalfont                           % spazio e attiva il corsivo per il testo
+    }
+}
 
+%% Definizione
+\newtcolorbox[auto counter, number within=chapter]{definizione}[1][]{
+    stileBase,
+    colframe=blueline,
+    before upper={%
+        \textbf{Definizione~\thetcbcounter}%
+        \ifstrempty{#1}{}{~\textbf{(#1)}}%
+        .%
+        \space\normalfont%                Spazio e font normale (non corsivo)
+    }
+}
+
+
+%% Ricordo
 \theoremstyle{remark}
 \newtheorem*{ricordo}{Ricordo}
 
 
-%% Nota
+%%Osservazione
+\theoremstyle{plain}
+\newtheorem*{oss}{Osservazione}
+
+
+
+%% Nota (Box style)
+% \newtcolorbox{nota}[1][]{
+%     breakable,
+%     enhanced,
+%     colframe=blue!40!black!60,
+%     boxrule=0.5pt,
+%     colback=cyan!18,
+%     left=0.5em,
+%     right=0.5em,
+%     top=0.2em,
+%     bottom=0.2em,
+%     fontupper=\small,
+%     before upper={\textbf{Nota\ifstrempty{#1}{}{ (#1)}}:\;},
+%     drop shadow={black!30!white}
+% }
+%% Nota (Side line style)
 \newtcolorbox{nota}[1][]{
+    blanker,
     breakable,
-    enhanced,
-    colframe=blue!40!black!60,
-    boxrule=0.5pt,
-    colback=cyan!18,
-    left=0.5em,
-    right=0.5em,
-    top=0.2em,
-    bottom=0.2em,
-    fontupper=\small,
-    before upper={\textbf{Nota\ifstrempty{#1}{}{ (#1)}}:\;},
-    drop shadow={black!30!white}
+    left=15pt,
+    top=0pt, bottom=0pt,
+    borderline west={2pt}{0pt}{blueline},
+    before upper={\textbf{Nota\ifstrempty{#1}{}{ (#1)}}:\;}
 }
 
 
@@ -197,27 +243,37 @@
 }
 
 % ESEMPIO (Blu)
-\newtcolorbox[auto counter, number within=chapter]{esempio}[2][]{
+\newtcolorbox[auto counter, number within=chapter]{esempio}[1][]{
     commonstyle,
     colback=gray!5, colframe=gray,
     colbacktitle=gray,
-    title={Esempio \thetcbcounter\ifstrempty{#2}{}{: #2}}, #1
+    title={Esempio \thetcbcounter\ifstrempty{#1}{}{: #1}}
 }
 
-% APPROFONDIMENTO (Ambr)
-\newtcolorbox[auto counter, number within=chapter]{appr}[2][]{
-    commonstyle,
-    colback=amber!5, colframe=amber!80!black,
-    colbacktitle=orange!80!black,
-    title={Approfondimento \thetcbcounter\ifstrempty{#2}{}{: #2}}, #1
+%% FOCUS (barra laterale)
+\newtcolorbox{focus}[1][]{%
+    blanker,
+    breakable,
+    left=15pt,
+    top=0pt, bottom=0pt,
+    borderline west={2pt}{0pt}{gray!70},
+    before upper={\ifstrempty{#1}{}{\textbf{#1}\par\smallskip}},
 }
 
-% RIASSUNTO (Viola)
-\newtcolorbox{riassunto}[2][]{
+
+\newenvironment{appr}[1][]
+  {%
+   \ClassWarning{classnotes}{L'ambiente 'appr' e' deprecato. Usa 'focus'.}%
+   \begin{focus}[#1]%
+  }
+  {\end{focus}}
+
+% RIASSUNTO
+\newtcolorbox{riassunto}[1][]{
     commonstyle,
-    colback=purple!5, colframe=purple!70!black,
-    colbacktitle=purple!70!black,
-    title={Riassunto\ifstrempty{#2}{}{: #2}}, #1
+    colback=redline!10, colframe=redline,
+    colbacktitle=redline,
+    title={Riassunto\ifstrempty{#1}{}{: #1}}
 }
 
 % CUSTOMBOX 
@@ -228,6 +284,11 @@
     title={#2},
     #1
 }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% FRONTESPIZIO                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \NewDocumentCommand{\HRule}{}{\rule{\linewidth}{0.5mm}} 

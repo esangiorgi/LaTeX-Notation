@@ -1,0 +1,147 @@
+\documentclass[12pt]{classnotes}
+\usepackage{lipsum}
+\usepackage{verbatim}
+
+\def\tbs{\textbackslash}
+
+\title{\vspace{-1em}Guida all'uso della \\[0.5em]classe \texttt{classnotes}\vspace{-0.5em}}
+\author{Edoardo Sangiorgi}
+\titleimage[scale=0.7]{logo_unife.png}
+
+\begin{document}
+
+\maketitle
+
+
+
+\chapter{Introduzione}
+Questo documento è una guida su come usare la classe \texttt{classnotes}.
+Questa classe è pensata per facilitare la redazione di appunti delle lezioni, specialmente di corsi universitari di tipo ingegneristico (ma possono trovare utilità anche in corsi di altre discipline).
+
+I criteri con cui è stata progettata questa classe è quella di avere degli appunti ben chiari ed eleganti, in cui la gerarchia degli argomenti sia ben definita ma anche la loro tipologia.
+L'obiettivo è che sia sempre univocamente chiaro se quello che si sta leggendo sia un esempio, un approfondimento o faccia parte della trattazione principale.
+
+Una presemma importante è che questa classe è soggetta a revisione pertanto non è detto che l'obiettivo che ci si è posti sia riuscito.
+Sarà cura dell'autore provvedere ad aggiornare la classe con nuove esigenze.
+
+
+\chapter{Frontespizio}
+Il frontespizio è gestito in automatico dalla classe ed è definito a priori.
+Si può costruire chiamando semplicemente il comando \texttt{\tbs maketitle}.
+
+Per settare i parametri basta inserire i contenuti in \texttt{\tbs title}, \texttt{\tbs author} e \texttt{\tbs titleimage} in questo modo
+
+\begin{verbatim}
+\title{Appunti di Qualcosa}
+\author{Edoardo Sangiorgi}
+\titleimage[scale=0.7]{foto.png}
+\end{verbatim}
+
+Come si vede dall'esempio, è possibile passare fra parentesi tutti gli argomenti della funzione \texttt{\tbs includegraphics} tramite \texttt{\tbs titleimage}.
+Se l'immagine è omessa, verrà rimpiazzata da uno spazio bianco.
+
+\textbf{Nota}: non c'è un resize automatico delle barre orizzontali rispetto allo spazio del titolo, pertanto se si presenta la necessità di cambiarle, bisogna agire aggiungendo spazi nel comando \texttt{\tbs title} come in questo esempio
+\begin{verbatim}
+\title{\vspace{-0.5em}Guida all'uso della \\[0.5em]classe \texttt{classnotes}} 
+\end{verbatim}
+
+
+
+\chapter{Ambienti} % (fold)
+Sono stati definiti diversi ambienti per facilitare la lettura del testo e dei suoi contenuti.
+Qui sotto vengono elencati con relativi esempi.
+
+\section{Ambienti di matematica}
+
+\subsubsection*{Teoremi}
+\begin{verbatim}
+\begin{teorema}[Titolo]
+    \lipsum[1]
+\end{teorema}
+\end{verbatim}
+\begin{teorema}[Titolo]
+    \lipsum[1]
+\end{teorema}
+Il titolo è opzionale, se non viene specificato (in tal caso non serve scrivere [\space]) non viene stampato.
+
+
+\subsubsection*{Definizioni}
+\begin{verbatim}
+\begin{definizione}[Titolo]
+    \lipsum[1]
+\end{definizione}
+\end{verbatim}
+\begin{definizione}[Titolo]
+    \lipsum[1]
+\end{definizione}
+Anche in questo caso il titolo è opzionale (ma consigliato).
+
+\subsubsection*{Altri ambienti}
+Riportiamo anche gli ambienti \texttt{\tbs proof}, \texttt{\tbs ricordo} e \texttt{\tbs oss} (di osservazione)
+\begin{proof}
+    \lipsum[1]
+\end{proof}
+\begin{ricordo}
+    Questa cosa è importante ricordarla.
+\end{ricordo}
+
+\begin{oss}
+    Questa cosa è importante osservarla
+\end{oss}
+
+
+\section{Ambienti di testo}
+Riportiamo poi gli ambienti da inserire nel testo per evidenziare un concetto, riassumere un capitolo, approfondire un certo tema o proporre un esempio.
+
+\subsubsection*{Nota}
+\begin{verbatim}
+\begin{nota}[Una certa cosa]
+    Questa cosa è importante quindi le evidenziamo in questo modo
+\end{nota}
+\end{verbatim}
+\begin{nota}[Una certa cosa]
+    Questa cosa è importante quindi le evidenziamo in questo modo
+\end{nota}
+Il titolo può anche essere omesso.
+
+
+\subsubsection*{Riassunto}
+\begin{verbatim}
+\begin{riassunto}[Argomento]
+    \lipsum[1]
+\end{riassunto}    
+\end{verbatim}
+\begin{riassunto}[Argomento]
+    \lipsum[1]
+\end{riassunto}
+Il titolo può anche essere omesso.
+
+\subsubsection*{Approfondimento}
+\begin{verbatim}
+\begin{focus}[Approfondimento su un certo tema]
+    \lipsum{1}
+\end{focus}    
+\end{verbatim}
+\begin{focus}[Approfondimento su un certo tema]
+    \lipsum[1]
+\end{focus}
+
+
+\subsubsection*{Esempio}
+\begin{verbatim}
+\begin{esempio}[Titolo esempio]
+    \lipsum[1]
+\end{esempio}    
+\end{verbatim}
+\begin{esempio}[Titolo esempio]
+    \lipsum[1]
+\end{esempio}
+\end{document}
+
+
+
+
+
+
+
+
