@@ -215,8 +215,11 @@
     blanker,
     breakable,
     left=15pt,
-    top=0pt, bottom=0pt,
-    borderline west={2pt}{0pt}{blueline},
+    top=0pt, bottom=5pt,
+    borderline west={1pt}{0pt}{blueline},
+    overlay unbroken and last={
+        \draw[blueline, line width=1pt] (frame.south west) -- ++(0.2\linewidth, 0);
+    },
     before upper={\textbf{Nota\ifstrempty{#1}{}{ (#1)}}:\;}
 }
 
@@ -255,8 +258,11 @@
     blanker,
     breakable,
     left=15pt,
-    top=0pt, bottom=0pt,
-    borderline west={2pt}{0pt}{gray!70},
+    top=0pt, bottom=5pt,
+    borderline west={1pt}{0pt}{gray!70},
+    overlay unbroken and last={
+        \draw[gray!70, line width=1pt] (frame.south west) -- ++(0.2\linewidth, 0);
+    },
     before upper={\ifstrempty{#1}{}{\textbf{#1}\par\smallskip}},
 }
 
