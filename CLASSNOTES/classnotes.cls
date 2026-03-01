@@ -56,6 +56,8 @@
 \RequirePackage{setspace} % Per l'interlinea
 \RequirePackage{etoolbox}
 \RequirePackage{parskip}
+\RequirePackage{amssymb}
+\RequirePackage{titlesec}
 % \RequirePackage{mdframed}
 
 
@@ -87,7 +89,9 @@
 \colorlet{blueline}{blue!50!black!90}
 \colorlet{redline}{red!50!black!90}
 \colorlet{greenline}{green!50!black!90}
-
+\colorlet{elegantgray}{black!60!blueline}
+% \colorlet{elegantgray}{gray!60!blueline}
+% \colorlet{elegantgray}{blueline!50!green!30!black}
 
 
 
@@ -100,7 +104,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\onehalfspacing
+% \onehalfspacing
+\linespread{1.15}
 \raggedbottom
 
 \hypersetup{                             % Opzioni di 
@@ -139,8 +144,26 @@
 \setlength{\headheight}{15pt}
 
 
+\titleformat{\chapter}[display]
+    {\normalfont\huge\bfseries}
+    {\textcolor{blueline}{\sffamily \chaptertitlename\ \thechapter}}
+    {1ex}
+    {\Huge}
+
+% \titlespacing*{\chapter}{0pt}{-20pt}{40pt}
 
 
+% \titleformat{\section}
+%   {\normalfont\sffamily\Large\bfseries}
+%   {\thesection}
+%   {1em}
+%   {}
+
+% \titleformat{\subsection}
+%   {\normalfont\sffamily\large\bfseries}
+%   {\thesubsection}
+%   {1em}
+%   {}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -184,14 +207,31 @@
 }
 
 
+
+\newtheoremstyle{ossStyle}
+  {\topsep}   % Spazio sopra
+  {\topsep}   % Spazio sotto
+  {\normalfont} % Font del corpo del testo (normale)
+  {}          % Rientro
+  {\sffamily\bfseries\color{blueline}} % FONT DEL TITOLO: bastoni, grassetto e blueline!
+  {.}         % Punteggiatura dopo il titolo
+  {0.5em}     % Spazio dopo il titolo
+  {}          % Specifica dell'intestazione (lasciare vuoto)
+
+
 %% Ricordo
-\theoremstyle{remark}
+\theoremstyle{ossStyle}
 \newtheorem*{ricordo}{Ricordo}
 
-
-%%Osservazione
-\theoremstyle{plain}
+%% Osservazione
 \newtheorem*{oss}{Osservazione}
+
+
+%% Dimostrazione
+\renewcommand{\qedsymbol}{\ensuremath{\textcolor{blueline}{\square}}}
+\addto\captionsitalian{%
+  \renewcommand{\proofname}{\upshape\sffamily\bfseries \textcolor{blueline}{Dimostrazione}}%
+}
 
 
 
@@ -214,8 +254,8 @@
 \newtcolorbox{nota}[1][]{
     blanker,
     breakable,
-    left=15pt,
-    top=0pt, bottom=5pt,
+    left=10pt,
+    top=0pt, bottom=8pt,
     borderline west={1pt}{0pt}{blueline},
     overlay unbroken and last={
         \draw[blueline, line width=1pt] (frame.south west) -- ++(0.2\linewidth, 0);
@@ -237,7 +277,7 @@
     commonstyle/.style={
         enhanced, breakable,
         arc=3pt, boxrule=0.8pt,
-        drop shadow={black!30!white}, % Ombra più discreta e professionale
+        % drop fuzzy shadow=black!30,
         fonttitle=\bfseries,
         attach boxed title to top left={xshift=3mm, yshift=-3mm, yshifttext=-1mm},
         boxed title style={boxrule=0.5pt},
@@ -245,11 +285,12 @@
     }
 }
 
-% ESEMPIO (Blu)
+% ESEMPIO 
 \newtcolorbox[auto counter, number within=chapter]{esempio}[1][]{
     commonstyle,
-    colback=gray!5, colframe=gray,
-    colbacktitle=gray,
+    colback=elegantgray!5, colframe=elegantgray,
+    % drop fuzzy shadow=elegantgray!30,
+    colbacktitle=elegantgray,
     title={Esempio \thetcbcounter\ifstrempty{#1}{}{: #1}}
 }
 
@@ -257,11 +298,11 @@
 \newtcolorbox{focus}[1][]{%
     blanker,
     breakable,
-    left=15pt,
-    top=0pt, bottom=5pt,
-    borderline west={1pt}{0pt}{gray!70},
+    left=10pt,
+    top=0pt, bottom=8pt,
+    borderline west={1pt}{0pt}{elegantgray},
     overlay unbroken and last={
-        \draw[gray!70, line width=1pt] (frame.south west) -- ++(0.2\linewidth, 0);
+        \draw[elegantgray, line width=1pt] (frame.south west) -- ++(0.2\linewidth, 0);
     },
     before upper={\ifstrempty{#1}{}{\textbf{#1}\par\smallskip}},
 }
@@ -279,6 +320,7 @@
     commonstyle,
     colback=redline!10, colframe=redline,
     colbacktitle=redline,
+    % drop fuzzy shadow=redline!25,
     title={Riassunto\ifstrempty{#1}{}{: #1}}
 }
 
